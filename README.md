@@ -48,7 +48,7 @@ You can override all default colors by using the `davlog.COLORS` object.
 build status
 ------------
 
-[![Build Status](https://secure.travis-ci.org/davglass/davlog.png?branch=master)](http://travis-ci.org/davglas/davlog)
+[![Build Status](https://secure.travis-ci.org/davglass/davlog.png?branch=master)](http://travis-ci.org/davglass/davlog)
 
 node badge
 ----------
