@@ -29,7 +29,8 @@
   "devDependencies": {
     "vows": "~0.7.0",
     "istanbul": "~0.1.44",
-    "yui-lint": "~0.1.3"
+    "yui-lint": "~0.1.3",
+    "jshint": "~2.1.11"
   },
   "dependencies": {
     "ansi-color": "~0.2.1"
