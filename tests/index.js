@@ -27,16 +27,13 @@ var tests = {
             
             return args;
         },
-        'should have 6 items': function(a) {
-            assert.equal(a.length, 6);
+        'should have 3 items': function(a) {
+            assert.equal(a.length, 3);
         },
         'and items are right': function(a) {
             assert.equal(a[0], '\u001b[35mdavlog\u001b[0m');
             assert.equal(a[1], '\u001b[37m[info]\u001b[0m');
-            assert.equal(a[2], 'this');
-            assert.equal(a[3], 'is');
-            assert.equal(a[4], 'a');
-            assert.equal(a[5], 'test');
+            assert.equal(a[2], 'this is a test');
         }
     },
     'warn': {
@@ -55,16 +52,13 @@ var tests = {
             
             return args;
         },
-        'should have 6 items': function(a) {
-            assert.equal(a.length, 6);
+        'should have 3 items': function(a) {
+            assert.equal(a.length, 3);
         },
         'and items are right': function(a) {
             assert.equal(a[0], '\u001b[35mfoo\u001b[0m');
             assert.equal(a[1], '\u001b[33m[warn]\u001b[0m');
-            assert.equal(a[2], 'this');
-            assert.equal(a[3], 'is');
-            assert.equal(a[4], 'a');
-            assert.equal(a[5], 'test');
+            assert.equal(a[2], 'this is a test');
         }
     },
     'log': {
@@ -84,16 +78,13 @@ var tests = {
             
             return args;
         },
-        'should have 6 items': function(a) {
-            assert.equal(a.length, 6);
+        'should have 3 items': function(a) {
+            assert.equal(a.length, 3);
         },
         'and items are right': function(a) {
             assert.equal(a[0], '\u001b[37mfoo\u001b[0m');
             assert.equal(a[1], '\u001b[36m[log]\u001b[0m');
-            assert.equal(a[2], 'this');
-            assert.equal(a[3], 'is');
-            assert.equal(a[4], 'a');
-            assert.equal(a[5], 'test');
+            assert.equal(a[2], 'this is a test');
         }
     },
     'err': {
@@ -113,16 +104,13 @@ var tests = {
             
             return args;
         },
-        'should have 6 items': function(a) {
-            assert.equal(a.length, 6);
+        'should have 3 items': function(a) {
+            assert.equal(a.length, 3);
         },
         'and items are right': function(a) {
             assert.equal(a[0], '\u001b[37mfoo\u001b[0m');
             assert.equal(a[1], '\u001b[31m[err]\u001b[0m');
-            assert.equal(a[2], 'this');
-            assert.equal(a[3], 'is');
-            assert.equal(a[4], 'a');
-            assert.equal(a[5], 'test');
+            assert.equal(a[2], 'this is a test');
         }
     },
     'err -- noColor': {
@@ -141,16 +129,13 @@ var tests = {
             
             return args;
         },
-        'should have 6 items': function(a) {
-            assert.equal(a.length, 6);
+        'should have 3 items': function(a) {
+            assert.equal(a.length, 3);
         },
         'and items are right': function(a) {
             assert.equal(a[0], 'davlog');
             assert.equal(a[1], '[err]');
-            assert.equal(a[2], 'this');
-            assert.equal(a[3], 'is');
-            assert.equal(a[4], 'a');
-            assert.equal(a[5], 'test');
+            assert.equal(a[2], 'this is a test');
         }
     },
     'error': {
@@ -177,8 +162,41 @@ var tests = {
             
             return args;
         },
-        'should have 7 items': function(a) {
-            assert.equal(a.length, 7);
+        'should have 4 items': function(a) {
+            assert.equal(a.length, 4);
+        }
+    },
+    'info, log, warn, err & error formatting/substitution': {
+        topic: function() {
+            var args = [],
+                exit = process.exit,
+                log = function() {
+                    args.push(Array.prototype.slice.call(arguments));
+                };
+
+            davlog.logFn = log;
+            davlog.errFn = log;
+
+            process.exit = function() {};
+
+            davlog.info('%s %s %s %s', 'this', 'is', 'a', 'test');
+            davlog.log('%s %s %s %s', 'this', 'is', 'a', 'test');
+            davlog.warn('%s %s %s %s', 'this', 'is', 'a', 'test');
+            davlog.err('%s %s %s %s','this', 'is', 'a', 'test');
+            davlog.error('%s %s %s %s','this', 'is', 'a', 'test');
+
+            process.exit = exit;
+
+            return args;
+        },
+        'should have correctly formatted output': function(a) {
+            assert.deepEqual(a, [
+                ['davlog', '[info]', 'this is a test'],
+                ['davlog', '[log]', 'this is a test'],
+                ['davlog', '[warn]', 'this is a test'],
+                ['davlog', '[err]', 'this is a test'],
+                ['davlog', '[error]', 'this is a test']
+            ]);
         }
     },
     'info, log & warn - quiet': {
@@ -197,8 +215,8 @@ var tests = {
 
             return args;
         },
-        'should have 6 items': function(a) {
-            assert.equal(a.length, 6);
+        'should have 3 items': function(a) {
+            assert.equal(a.length, 3);
         }
     },
     'info, log, warn, err & error - silent': {
