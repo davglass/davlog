@@ -20,12 +20,7 @@
   "bugs": {
     "url": "https://github.com/davglass/davlog/issues"
   },
-  "licenses": [
-    {
-      "type": "BSD",
-      "url": "https://github.com/davglass/davlog/blob/master/LICENSE"
-    }
-  ],
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "vows": "~0.7.0",
     "istanbul": "~0.1.44",
