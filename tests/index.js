@@ -245,6 +245,37 @@ var tests = {
         'should have 0 items': function(a) {
             assert.equal(a.length, 0);
         }
+    },
+    'timestamps': {
+        topic: function() {
+            var args = null,
+                log = function() {
+                    args = Array.prototype.slice.call(arguments);
+                },
+                oldToISO = Date.prototype.toISOString;
+
+            davlog.logFn = log;
+            davlog.init({
+                timestamps: true
+            });
+
+            Date.prototype.toISOString = function(){
+                return 'FAKE_ISO_STRING';
+            };
+            
+            davlog.log('this is a test');
+            
+            Date.prototype.toISOString = oldToISO;
+            return args;
+        },
+        'should have 3 items': function(a) {
+            assert.equal(a.length, 3);
+        },
+        'and the items are right': function(a) {
+            assert.equal(a[0], 'FAKE_ISO_STRING davlog');
+            assert.equal(a[1], '[log]');
+            assert.equal(a[2], 'this is a test');
+        }
     }
 };
 
