@@ -36,10 +36,11 @@ methods
 options
 -------
 
-The `init` function allows for 2 options:
+The `init` function allows for 3 options:
 
    * `name` - The name prefix to the string: Defaults to: 'davlog'
    * `color` - The string for the color or `false` to disable color: Defaults to `magenta`
+   * `timestamps` - If true, adds an ISO timestamp to the beginning of each log line.
 
 You can override all prefixes by using the: `davlog.STRINGS` object.
 You can override all default colors by using the `davlog.COLORS` object.
