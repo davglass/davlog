@@ -210,7 +210,7 @@ var tests = {
                 logger = davlog.init();
 
             logger.logFn = log;
-            logger.quiet();
+            logger.quiet(); // implicit reset
 
             logger.info('this', 'is', 'a', 'test');
             logger.log('this', 'is', 'a', 'test');
@@ -218,8 +218,8 @@ var tests = {
 
             return args;
         },
-        'should have 3 items': function(a) {
-            assert.equal(a.length, 3);
+        'should have 0 items': function(a) {
+            assert.equal(a.length, 0);
         }
     },
     'info, log, warn, err & error - silent': {
@@ -232,9 +232,9 @@ var tests = {
                 logger = davlog.init();
 
             logger.logFn = log;
-            logger.silent();
-
             process.exit = function() {};
+            logger.silent(); // implicit reset
+
 
             logger.info('this', 'is', 'a', 'test');
             logger.log('this', 'is', 'a', 'test');
