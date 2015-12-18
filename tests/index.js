@@ -5,7 +5,7 @@ var vows = require('vows'),
 var tests = {
     'is loaded': {
         topic: function() {
-            return davlog;
+            return davlog.init();
         },
         'contains info': function(l) {
             assert.isFunction(l.info);
@@ -19,11 +19,12 @@ var tests = {
             var args = null,
                 log = function() {
                     args = Array.prototype.slice.call(arguments);
-                };
+                },
+                logger = davlog.init();
 
-            davlog.logFn = log;
+            logger.logFn = log;
             
-            davlog.info('this', 'is', 'a', 'test');
+            logger.info('this', 'is', 'a', 'test');
             
             return args;
         },
@@ -41,14 +42,14 @@ var tests = {
             var args = null,
                 log = function() {
                     args = Array.prototype.slice.call(arguments);
-                };
+                },
+                logger = davlog.init({
+                    name: 'foo'
+                });
 
-            davlog.logFn = log;
-            davlog.init({
-                name: 'foo'
-            });
+            logger.logFn = log;
             
-            davlog.warn('this', 'is', 'a', 'test');
+            logger.warn('this', 'is', 'a', 'test');
             
             return args;
         },
@@ -66,15 +67,15 @@ var tests = {
             var args = null,
                 log = function() {
                     args = Array.prototype.slice.call(arguments);
-                };
+                },
+                logger = davlog.init({
+                    name: 'foo',
+                    color: 'white'
+                });
 
-            davlog.logFn = log;
-            davlog.init({
-                name: 'foo',
-                color: 'white'
-            });
+            logger.logFn = log;
             
-            davlog.log('this', 'is', 'a', 'test');
+            logger.log('this', 'is', 'a', 'test');
             
             return args;
         },
@@ -92,15 +93,15 @@ var tests = {
             var args = null,
                 log = function() {
                     args = Array.prototype.slice.call(arguments);
-                };
+                },
+                logger = davlog.init({
+                    name: 'foo',
+                    color: 'white'
+                });
 
-            davlog.errFn = log;
-            davlog.init({
-                name: 'foo',
-                color: 'white'
-            });
+            logger.errFn = log;
             
-            davlog.err('this', 'is', 'a', 'test');
+            logger.err('this', 'is', 'a', 'test');
             
             return args;
         },
@@ -118,14 +119,14 @@ var tests = {
             var args = null,
                 log = function() {
                     args = Array.prototype.slice.call(arguments);
-                };
+                },
+                logger = davlog.init({
+                    color: false
+                });
 
-            davlog.errFn = log;
-            davlog.init({
-                color: false
-            });
+            logger.errFn = log;
             
-            davlog.err('this', 'is', 'a', 'test');
+            logger.err('this', 'is', 'a', 'test');
             
             return args;
         },
@@ -144,19 +145,19 @@ var tests = {
                 exit = process.exit,
                 log = function() {
                     args = Array.prototype.slice.call(arguments);
-                };
+                },
+                logger = davlog.init({
+                    color: false
+                });
 
-            davlog.errFn = log;
-            davlog.init({
-                color: false
-            });
+            logger.errFn = log;
 
 
             process.exit = function() {
                 args.push(true);
             };
             
-            davlog.error('this', 'is', 'a', 'test');
+            logger.error('this', 'is', 'a', 'test');
 
             process.exit = exit;
             
@@ -172,18 +173,19 @@ var tests = {
                 exit = process.exit,
                 log = function() {
                     args.push(Array.prototype.slice.call(arguments));
-                };
+                },
+                logger = davlog.init({color: false});
 
-            davlog.logFn = log;
-            davlog.errFn = log;
+            logger.logFn = log;
+            logger.errFn = log;
 
             process.exit = function() {};
 
-            davlog.info('%s %s %s %s', 'this', 'is', 'a', 'test');
-            davlog.log('%s %s %s %s', 'this', 'is', 'a', 'test');
-            davlog.warn('%s %s %s %s', 'this', 'is', 'a', 'test');
-            davlog.err('%s %s %s %s','this', 'is', 'a', 'test');
-            davlog.error('%s %s %s %s','this', 'is', 'a', 'test');
+            logger.info('%s %s %s %s', 'this', 'is', 'a', 'test');
+            logger.log('%s %s %s %s', 'this', 'is', 'a', 'test');
+            logger.warn('%s %s %s %s', 'this', 'is', 'a', 'test');
+            logger.err('%s %s %s %s','this', 'is', 'a', 'test');
+            logger.error('%s %s %s %s','this', 'is', 'a', 'test');
 
             process.exit = exit;
 
@@ -204,14 +206,15 @@ var tests = {
             var args = [],
                 log = function() {
                     args = [].concat(args, Array.prototype.slice.call(arguments));
-                };
+                },
+                logger = davlog.init();
 
-            davlog.logFn = log;
-            davlog.quiet();
+            logger.logFn = log;
+            logger.quiet();
 
-            davlog.info('this', 'is', 'a', 'test');
-            davlog.log('this', 'is', 'a', 'test');
-            davlog.warn('this', 'is', 'a', 'test');
+            logger.info('this', 'is', 'a', 'test');
+            logger.log('this', 'is', 'a', 'test');
+            logger.warn('this', 'is', 'a', 'test');
 
             return args;
         },
@@ -225,18 +228,19 @@ var tests = {
                 exit = process.exit,
                 log = function() {
                     args = [].concat(args, Array.prototype.slice.call(arguments));
-                };
+                },
+                logger = davlog.init();
 
-            davlog.logFn = log;
-            davlog.silent();
+            logger.logFn = log;
+            logger.silent();
 
             process.exit = function() {};
 
-            davlog.info('this', 'is', 'a', 'test');
-            davlog.log('this', 'is', 'a', 'test');
-            davlog.warn('this', 'is', 'a', 'test');
-            davlog.err('this', 'is', 'a', 'test');
-            davlog.error('this', 'is', 'a', 'test');
+            logger.info('this', 'is', 'a', 'test');
+            logger.log('this', 'is', 'a', 'test');
+            logger.warn('this', 'is', 'a', 'test');
+            logger.err('this', 'is', 'a', 'test');
+            logger.error('this', 'is', 'a', 'test');
 
             process.exit = exit;
 
@@ -252,18 +256,19 @@ var tests = {
                 log = function() {
                     args = Array.prototype.slice.call(arguments);
                 },
+                logger = davlog.init({
+                    timestamps: true,
+                    color: false
+                }),
                 oldToISO = Date.prototype.toISOString;
 
-            davlog.logFn = log;
-            davlog.init({
-                timestamps: true
-            });
+            logger.logFn = log;
 
             Date.prototype.toISOString = function(){
                 return 'FAKE_ISO_STRING';
             };
             
-            davlog.log('this is a test');
+            logger.log('this is a test');
             
             Date.prototype.toISOString = oldToISO;
             return args;

@@ -8,9 +8,9 @@ usage
 
 ```javascript
 
-var logger = require('davlog');
+var davlog = require('davlog');
 
-logger.init({
+var logger = davlog.init({
     name: 'foo',
     color: 'white'
 }); //Should only need once
@@ -20,6 +20,18 @@ logger.info('This is a test');
 ```
 
 ```foo [info] This is test```
+
+Note that the module is an instance of itself, with the default options:
+
+```javascript
+
+var davlog = require('davlog');
+
+logger.info('This is a test');
+
+```
+
+```davlog [info] This is test```
 
 
 methods
@@ -42,8 +54,8 @@ The `init` function allows for 3 options:
    * `color` - The string for the color or `false` to disable color: Defaults to `magenta`
    * `timestamps` - If true, adds an ISO timestamp to the beginning of each log line.
 
-You can override all prefixes by using the: `davlog.STRINGS` object.
-You can override all default colors by using the `davlog.COLORS` object.
+You can override all prefixes by using the: `logger.STRINGS` object.
+You can override all default colors by using the `logger.COLORS` object.
 
 
 build status
