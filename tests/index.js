@@ -2,6 +2,11 @@ var vows = require('vows'),
     assert = require('assert'),
     davlog = require('../lib');
 
+// need to set max listeners because we're piping to stdout and stderr a lot
+var MAX_LISTENERS = 15;
+process.stdout.setMaxListeners(MAX_LISTENERS);
+process.stderr.setMaxListeners(MAX_LISTENERS);
+
 var tests = {
     'is loaded': {
         topic: function() {
@@ -12,6 +17,15 @@ var tests = {
         },
         'contains warn': function(l) {
             assert.isFunction(l.warn);
+        }
+    },
+    'streams': {
+        topic: function() {
+            return davlog.init();
+        },
+        'should have the streams readable': function(l) {
+            assert(l.stdout.readable);
+            assert(l.stderr.readable);
         }
     },
     'info': {
