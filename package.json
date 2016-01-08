@@ -1,6 +1,6 @@
 {
   "name": "davlog",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Dav Glass <davglass@gmail.com>",
   "description": "The logger davglass uses in his CLI tools",
   "main": "./lib/index.js",
