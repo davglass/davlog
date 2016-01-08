@@ -264,6 +264,45 @@ var tests = {
             assert.equal(a.length, 0);
         }
     },
+    'binding' : {
+        topic: function() {
+            var args = [],
+                exit = process.exit,
+                log = function() {
+                    args.push(this);
+                },
+                bound,
+                logger = davlog.init();
+
+            logger.logFn = log;
+            logger.errFn = log;
+            process.exit = function() {};
+            logger.reset();
+
+
+            bound = logger.info;
+            bound('this', 'is', 'a', 'test');
+            bound = logger.log;
+            bound('this', 'is', 'a', 'test');
+            bound = logger.warn;
+            bound('this', 'is', 'a', 'test');
+            bound = logger.err;
+            bound('this', 'is', 'a', 'test');
+            bound = logger.error;
+            bound('this', 'is', 'a', 'test');
+
+            process.exit = exit;
+
+            return [args, logger];
+        },
+        'should be the logger object': function(a) {
+            var args = a[0], logger = a[1], i;
+            assert.equal(args.length, 5);
+            for (i = 0; i < 5; i++) {
+                assert.equal(args[i], logger);
+            }
+        }
+    },
     'timestamps': {
         topic: function() {
             var args = null,
