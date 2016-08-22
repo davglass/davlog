@@ -27,7 +27,7 @@ Note that the module is an instance of itself, with the default options:
 
 var davlog = require('davlog');
 
-logger.info('This is a test');
+davlog.info('This is a test');
 
 ```
 
